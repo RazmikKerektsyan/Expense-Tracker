@@ -4,12 +4,19 @@
 import json
 from tabulate import tabulate
 
+import sys
+
 try:
     with open("expenses.json", "r", encoding="utf-8") as file:
         expenses = json.load(file)
+
 except FileNotFoundError:
     expenses = []
 
+except json.JSONDecodeError:
+    print("Error: expenses.json is corrupted!")
+    print("Your data has not been changed.")
+    sys.exit(1)
 
 def save_expenses():
     with open("expenses.json", "w", encoding="utf-8") as json_file:
