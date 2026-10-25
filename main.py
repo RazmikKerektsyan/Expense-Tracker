@@ -1,9 +1,21 @@
 #my first project with python
 # it is Expense Tracker
 
+import json
 from tabulate import tabulate
 
-expenses = []
+try:
+    with open("expenses.json", "r", encoding="utf-8") as file:
+        expenses = json.load(file)
+except FileNotFoundError:
+    expenses = []
+
+
+def save_expenses():
+    with open("expenses.json", "w", encoding="utf-8") as json_file:
+        json.dump(expenses, json_file, indent=4, ensure_ascii=False)
+
+
 while True:
 
     print("=== Expense Tracker ===")
@@ -57,6 +69,7 @@ while True:
                             "category": category
                         }
                         expenses.append(expense)
+                        save_expenses()
                         print("Expense added successfully!")
             except ValueError:
                 print("Invalid price!")
@@ -103,6 +116,7 @@ while True:
                 if 1 <= number <= len(expenses):
                     index = number - 1
                     expenses.pop(index)
+                    save_expenses()
                     print("Expense deleted successfully!")
                 else:
                     print("Invalid number!")
